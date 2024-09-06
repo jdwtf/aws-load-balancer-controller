@@ -212,6 +212,11 @@ wait_until_deployment_ready() {
 
 wait_until_deployment_ready aws-load-balancer-controller kube-system
 
+#sleep for 5 minutes to ensure webhooks are established
+if [[ $ADC_REGIONS == *"$REGION"* ]]; then
+  sleep 300
+fi
+
 function run_ginkgo_test() {
   TEST_RESULT=success
   local focus=$1
