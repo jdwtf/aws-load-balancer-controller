@@ -177,6 +177,16 @@ if [[ $ADC_REGIONS == *"$REGION"* ]]; then
   kubectl patch deployment aws-load-balancer-controller -n kube-system \
     --type=json \
     -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--feature-gates=NLBSecurityGroup=false,ListenerRulesTagging=false"}]' || true
+  kubectl patch deployment aws-load-balancer-controller -n kube-system \
+    --type=json \
+    -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--enable-waf=false"}]' || true
+  kubectl patch deployment aws-load-balancer-controller -n kube-system \
+    --type=json \
+    -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--enable-waf2=false"}]' || true
+  kubectl patch deployment aws-load-balancer-controller -n kube-system \
+    --type=json \
+    -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--enable-shield=false"}]' || true
+
 else
   echo "install via helm repo, update helm repo from github"
   if [[ "$DISABLE_WAFV2" == true ]]; then
